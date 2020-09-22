@@ -1,0 +1,68 @@
+Sub StockHomework():
+
+For Each ws In Worksheets
+
+ws.Range("I1").Value = "Ticker_Name"
+ws.Range("J1").Value = "Yearly_Change"
+ws.Range("K1").Value = "Percent_Change"
+ws.Range("L1").Value = "Stock_Volume"
+
+Dim Ticker As String
+Dim TotalVolume As Double
+Dim Yearly_Change As Double
+Dim Percent_Change As Double
+Dim Summary_Table_Row As Integer
+Dim Open_Price As Double
+Dim Close_Price As Double
+    
+    Summary_Table_Row = 2
+    
+    TotalVolume = 0
+
+    LastRow = ws.Cells(Rows.Count, 1).End(xlUp).Row
+
+    Open_Price = ws.Cells(2, 3)
+For i = 2 To LastRow
+    
+        If ws.Cells(i + 1, 1) <> ws.Cells(i, 1) Then
+            Ticker = ws.Cells(i, 1)
+            ws.Range("I" & Summary_Table_Row).Value = Ticker
+            
+            TotalVolume = TotalVolume + ws.Cells(i, 7)
+            ws.Range("L" & Summary_Table_Row).Value = TotalVolume
+            
+            Close_Price = ws.Cells(i, 6)
+           
+            Yearly_Change = Close_Price - Open_Price
+            ws.Range("J" & Summary_Table_Row).Value = Yearly_Change
+            
+            
+            If Open_Price = 0 Then
+                Percent_Change = 0
+            Else
+                Percent_Change = Yearly_Change / Open_Price * 100
+           ws.Range("K" & Summary_Table_Row).Value = (Percent_Change & "%")
+           
+           End If
+             
+            TotalVolume = 0
+       
+            Open_Price = ws.Cells(i + 1, 3)
+            
+             If ws.Range("J" & Summary_Table_Row).Value >= 0 Then
+                ws.Range("J" & Summary_Table_Row).Interior.ColorIndex = 4
+            
+            Else
+            
+                ws.Range("J" & Summary_Table_Row).Interior.ColorIndex = 3
+            
+                End If
+            
+                Summary_Table_Row = Summary_Table_Row + 1
+        Else
+            TotalVolume = TotalVolume + ws.Cells(i, 7)
+            
+        End If
+        Next i
+        Next
+        End Sub
