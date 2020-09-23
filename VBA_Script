@@ -1,12 +1,14 @@
-Sub StockHomework():
-
+Sub StockPortfoliioAnalysis():
+'make your code applicable to all of your sheets
 For Each ws In Worksheets
 
+'Add the necessary headers needed
 ws.Range("I1").Value = "Ticker_Name"
 ws.Range("J1").Value = "Yearly_Change"
 ws.Range("K1").Value = "Percent_Change"
 ws.Range("L1").Value = "Stock_Volume"
 
+'set variables
 Dim Ticker As String
 Dim TotalVolume As Double
 Dim Yearly_Change As Double
@@ -22,6 +24,7 @@ Dim Close_Price As Double
     LastRow = ws.Cells(Rows.Count, 1).End(xlUp).Row
 
     Open_Price = ws.Cells(2, 3)
+'create a loop to go through all the data
 For i = 2 To LastRow
     
         If ws.Cells(i + 1, 1) <> ws.Cells(i, 1) Then
@@ -36,7 +39,7 @@ For i = 2 To LastRow
             Yearly_Change = Close_Price - Open_Price
             ws.Range("J" & Summary_Table_Row).Value = Yearly_Change
             
-            
+           'Yearly_Change cannot be divisible by a value of 0 
             If Open_Price = 0 Then
                 Percent_Change = 0
             Else
@@ -48,7 +51,7 @@ For i = 2 To LastRow
             TotalVolume = 0
        
             Open_Price = ws.Cells(i + 1, 3)
-            
+'conditional formatting for red and green            
              If ws.Range("J" & Summary_Table_Row).Value >= 0 Then
                 ws.Range("J" & Summary_Table_Row).Interior.ColorIndex = 4
             
@@ -57,7 +60,7 @@ For i = 2 To LastRow
                 ws.Range("J" & Summary_Table_Row).Interior.ColorIndex = 3
             
                 End If
-            
+            'Make sure your row chart reference adds 1 after the loop or you will keep on adding your values in the same row/cell
                 Summary_Table_Row = Summary_Table_Row + 1
         Else
             TotalVolume = TotalVolume + ws.Cells(i, 7)
